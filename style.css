@@ -1,0 +1,131 @@
+body {
+  background-image:url('https://i.ibb.co/jMLK470/20240608-000343.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  background-color: #F1e7dd;
+}
+
+#mytable, #mytable th, #mytable td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  background-color: #F1e7dd;
+}
+
+#mytable th, #mytable td {
+  padding: 5px;
+  text-align: left;
+}
+
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+
+.character-profile {
+  text-align: center;
+}
+
+.character-category {
+  text-align: center;
+  background-color: #f4c458;
+}
+
+h3 {
+  margin: 1%
+}
+
+p {
+  margin: 1%;
+}
+
+.center-table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input-large {
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.character-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+
+.info-cell {
+  background-color: white;
+  border: 1px solid black;
+  width: 40%;
+  padding: 5px;
+}
+
+.info-cell-value {
+  background-color: white;
+  border: 1px solid black;
+  width: 60%;
+  padding: 5px;
+}
+
+.center-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-center1 > th {
+  text-align: center;
+}
+
+.description {
+  border: 1px solid black;
+  padding: 5px;
+  background-color: white;
+}
+
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  padding: 5px;
+  background-color: #f4c458;
+}
+
+.info {
+  vertical-align: top;
+}
+
+.character-img {
+  width: 80%;
+}
+
+.character-bio {
+  max-height: 60px;
+  overflow: hidden;
+}
+
+img {
+  border: 1px solid black;
+}
+
+.see-more-btn {
+  cursor: pointer;
+  color: blue;
+  margin-top: 1px;
+}
