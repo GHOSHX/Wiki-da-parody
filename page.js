@@ -612,7 +612,7 @@ function saveState() {
 }
 
 function deletePage() {
-    window.location.href = `main.html?pageId=${currentPageId}`;
+    window.location.href = `index.html?pageId=${currentPageId}`;
 }
 
 function deleteElement(row, element, type) {
