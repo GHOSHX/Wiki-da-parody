@@ -34,15 +34,6 @@ let pageData;
 
 document.addEventListener('DOMContentLoaded', () => {
     openDB();
-    const urlParams = new URLSearchParams(window.location.search);
-    deletePageId = Number(urlParams.get('pageId'));
-    
-    if (deletePageId) {
-      const wrapper = document.querySelector(`.section-wrapper[data-index='${deletePageId}']`).querySelector('.delete-section-btn');
-      setTimeout(() => {
-        wrapper.click();
-      }, 100);
-    }
     document.getElementById('pic1-btn').addEventListener('click', () => {
         document.getElementById('home-pic1').style.display = 'none';
         document.getElementById('home-pic2').style.display = 'block';
@@ -96,7 +87,7 @@ function handleSectionClick (event) {
     if (target.classList.contains('page-open-btn') || target.classList.contains('title')) {
         const title = wrapper.querySelector('.title').textContent;
         const sectionsParam = encodeURIComponent(JSON.stringify(sections));
-        window.location.href = `page.html?pageId=${index}&pageTitle=${encodeURIComponent(title)}`;
+        window.location.href = `pagetest.html?pageId=${index}&pageTitle=${encodeURIComponent(title)}`;
     } else if (target.classList.contains('edit-section-btn')) {
         editSection(section, wrapper, target);
     } else if (target.classList.contains('delete-section-btn')) {

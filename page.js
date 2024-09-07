@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('bold-text-btn').addEventListener('click', () => styleText('bold'));
     document.getElementById('italic-text-btn').addEventListener('click', () => styleText('italic'));
+    document.getElementById('link-text-btn').addEventListener('click', () => styleText('link'));
     document.getElementById('add-img-btn').addEventListener('click', generateImage);
     editButton.addEventListener('click', editPage);
     document.getElementById('change-poster').addEventListener('click', () => {
@@ -102,41 +103,60 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function styleText(type) {
-    const start = currentTextArea.selectionStart;
-    const end = currentTextArea.selectionEnd;
+    const selection = window.getSelection();
     
-    if (start !== end) {
-        let selectedText = currentTextArea.value.substring(start, end);
-        let beforeText = currentTextArea.value.substring(0, start);
-        let afterText = currentTextArea.value.substring(end);
-        let newtext;
-        let tag, tagLength;
-        
-        if (type === 'bold') {
-            tag = 'b';
-            tagLength = 3;
-        } else if (type === 'italic') {
-            tag = 'i';
-            tagLength = 3;
+    if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const parentNode = range.commonAncestorContainer.parentNode;
+        const selectedText = range.toString();
+
+        if (selectedText.length > 0) {
+            let tag, openingTag, closingTag, href;
+
+            if (type === 'bold') {
+                tag = 'b';
+            } else if (type === 'italic') {
+                tag = 'i';
+            } else if (type === 'link') {
+                tag = 'a';
+                href = prompt('Enter the URL', 'https://');
+                openingTag = `<${tag} href="${href}">`;
+                closingTag = `</${tag}>`;
+            } else if (type === 'image') {
+                
+            }
+
+            if (!openingTag && !closingTag) {
+                openingTag = `<${tag}>`;
+                closingTag = `</${tag}>`;
+            }
+            
+            if (parentNode.nodeName.toLowerCase() === tag) {
+                const tagElement = parentNode;
+                while (tagElement.firstChild) {
+                    tagElement.parentNode.insertBefore(tagElement.firstChild, tagElement);
+                }
+                tagElement.remove();
+                return;
+            } else {
+                const newText = openingTag + selectedText + closingTag;
+                const newFragment = document.createDocumentFragment();
+                const newDiv = document.createElement('div');
+                newDiv.innerHTML = newText;
+    
+                while (newDiv.firstChild) {
+                    newFragment.appendChild(newDiv.firstChild);
+                }
+                
+                range.deleteContents();
+                range.insertNode(newFragment);
+            }
+            
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            currentTextArea.dispatchEvent(new Event('input'));
         }
-        
-        const openingTag = `<${tag}>`;
-        const closingTag = `</${tag}>`;
-        
-        if (selectedText.startsWith(openingTag) && selectedText.endsWith(closingTag)) {
-            selectedText = selectedText.substring(tagLength, selectedText.length - tagLength - 1);
-            newText = beforeText + selectedText + afterText;
-            currentTextArea.selectionStart = start;
-            currentTextArea.selectionEnd = end - (tagLength * 2 + 3);
-        } else {
-            newText = beforeText + openingTag + selectedText + closingTag + afterText;
-            currentTextArea.selectionStart = start;
-            currentTextArea.selectionEnd = end + (tagLength * 2 + 5);
-        }
-        
-        currentTextArea.value = newText;
-        
-        currentTextArea.dispatchEvent(new Event('input'));
     }
 }
 
@@ -202,11 +222,11 @@ function editPage() {
             });
             toolbar.style.display = 'block';
             titleInput.value = title.textContent;
-            introInput.value = introText.innerHTML;
-            synopsisInput.value = synopsisText.innerHTML;
+            introInput.innerHTML = introText.innerHTML;
+            synopsisInput.innerHTML = synopsisText.innerHTML;
             titleInput.style.display = 'inline';
-            introInput.style.display = 'inline';
-            synopsisInput.style.display = 'inline';
+            introInput.style.display = 'block';
+            synopsisInput.style.display = 'block';
             addImageBtn.style.display = 'block';
             title.style.display = 'none';
             introText.style.display = 'none';
@@ -217,8 +237,8 @@ function editPage() {
                 room.style.display = 'none';
             });
             data.title = titleInput.value;
-            data.intro = introInput.value;
-            data.synopsis = synopsisInput.value;
+            data.intro = introInput.innerHTML;
+            data.synopsis = synopsisInput.innerHTML;
             title.textContent = data.title;
             introText.innerHTML = data.intro;
             synopsisText.innerHTML = data.synopsis;
@@ -299,15 +319,15 @@ function editInfoBox(editMode) {
             cell2.style.backgroundColor = 'white';
             infoTitle.style.display = 'none';
             valueCell.style.display = 'none';
-            infoInput.value = infoTitle.innerHTML;
-            valueInput.value = valueCell.innerHTML;
+            infoInput.innerHTML = infoTitle.innerHTML;
+            valueInput.innerHTML = valueCell.innerHTML;
             inputWrapper.forEach(input => {
-              input.style.display = 'inline';
+              input.style.display = 'block';
             });
         } else {
-            cell.text1 = infoInput.value;
-            cell.text2 = valueInput.value;
-            if (!infoInput.value.trim() && !valueInput.value.trim()) {
+            cell.text1 = infoInput.innerHTML;
+            cell.text2 = valueInput.innerHTML;
+            if (!infoInput.innerHTML.trim() && !valueInput.value.trim()) {
                 const wrapper = infoInput.closest('.info-wrapper');
                 deleteElement(wrapper, cell, 'cell');
             } else {
