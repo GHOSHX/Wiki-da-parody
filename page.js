@@ -222,6 +222,8 @@ function updateCell(template, cell) {
 function editPage() {
     const controlRoom = document.querySelectorAll('.control-room');
     const toolbar = document.getElementById('toolbar');
+    const presetBtn1 = document.getElementById('enable-preset1');
+    const presetBtn2 = document.getElementById('enable-preset2');
     const title = document.getElementById('title');
     const introText = document.getElementById('intro');
     const synopsisText = document.getElementById('synopsis-text');
@@ -243,6 +245,8 @@ function editPage() {
                 room.style.display = 'block';
             });
             toolbar.style.display = 'block';
+            presetBtn1.style.display = 'inline';
+            presetBtn2.style.display = 'inline';
             titleInput.value = title.textContent;
             introInput.innerHTML = introText.innerHTML;
             synopsisInput.innerHTML = synopsisText.innerHTML;
@@ -268,6 +272,8 @@ function editPage() {
             introInput.style.display = 'none';
             synopsisInput.style.display = 'none';
             addImageBtn.style.display = 'none';
+            presetBtn1.style.display = 'none';
+            presetBtn2.style.display = 'none';
             title.style.display = 'block';
             introText.style.display = 'block';
             synopsisText.style.display = 'block';
