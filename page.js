@@ -379,7 +379,6 @@ function editSection(row, character, editMode) {
                 });
             }
         });
-        saveState();
     }
 }
 
@@ -563,6 +562,7 @@ function updateRow(row, character) {
     if (sections) {
         sections.sort((a, b) => a.position - b.position);
         sections.forEach(section => {
+            console.log(section.id);
             const template = document.getElementById('section-template').content.cloneNode(true);
             updateSection(template, section);
             row.querySelector('.section-lists').appendChild(template);
