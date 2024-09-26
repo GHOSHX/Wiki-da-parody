@@ -193,6 +193,7 @@ p {
   background-color: white;
   border: 1px solid black;
   border-right: 0;
+  font-size: 15px;
   width: 42%;
   padding: 5px;
 }
@@ -201,6 +202,7 @@ p {
   background-color: white;
   border: 1px solid black;
   border-left: 0;
+  font-size: 15px;
   width: 58%;
   padding: 5px;
 }
