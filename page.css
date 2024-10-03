@@ -100,14 +100,14 @@ th, td {
   width: 100%;
   padding: 0px;
   outline: none;
-  font-size: 13px;
+  font-size: 15px;
   background-color: transparent;
   border: 0px;
   box-sizing: border-box;
 }
 
 .info-title, .value-cell {
-  white-space: pre-line;
+
   font-size: 15px;
 }
 
