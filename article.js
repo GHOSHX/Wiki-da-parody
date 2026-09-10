@@ -1206,6 +1206,7 @@ function generateRow(elementNode, element, type) {
     let firstRow;
     let clones = [];
     let objects = [];
+    const rowList = document.getElementById('row-list');
     const oldRows = JSON.parse(JSON.stringify(rows));
     const newId = Date.now();
     if (type === 'copy') {
@@ -1220,35 +1221,47 @@ function generateRow(elementNode, element, type) {
         if (type === 'category' || type === 'sub-category') {
             let childRows;
             let childRowNodes;
-            const parentNode = elementNode.parentNode;
             if (type === 'category') {
                 childRows = rows.filter(row => row.category === element.id);
-                childRowNodes = parentNode.querySelectorAll(`.row-wrapper[data-category="${element.id}"]`);
+                childRowNodes = rowList.querySelectorAll(`.row-wrapper[data-category="${element.id}"]`);
             } else {
                 childRows = rows.filter(row => row.subCategory === element.id);
-                childRowNodes = parentNode.querySelectorAll(`.row-wrapper[data-sub-category="${element.id}"]`);
+                childRowNodes = rowList.querySelectorAll(`.row-wrapper[data-sub-category="${element.id}"]`);
+                console.log(Array.from(childRowNodes).map(obj => obj.dataset.subCategory))
             }
             firstRow = childRowNodes[childRowNodes.length - 1];
-            firstRow.parentNode.insertBefore(template, firstRow.nextElementSibling);
+            rowList.insertBefore(template, firstRow.nextElementSibling);
             firstRow = rowElement;
+            let subCategoryId = null;
             childRows.forEach((row, i) => {
                 const cloneTemplate = document.getElementById(`${row.type}-template`).content.cloneNode(true);
                 const object = JSON.parse(JSON.stringify(row));
                 const cloneNode = cloneTemplate.querySelector('.row-wrapper');
                 object.id = newId + i + 1;
+                
                 if (type === 'category') {
                     object.category = newId;
+                    if (object.type === 'sub-category') {
+                        subCategoryId = object.id;
+                    } else {
+                        object.subCategory = subCategoryId;
+                    }
                 } else if (type === 'sub-category') {
                     object.subCategory = newId;
                 }
+                
                 clones.push(cloneNode);
                 objects.push(updateRow(cloneNode, object, object.type, true));
-                firstRow.parentNode.insertBefore(cloneNode, firstRow.nextElementSibling);
+                rowList.insertBefore(cloneNode, firstRow.nextElementSibling);
                 firstRow = cloneNode;
             });
             clones.push(rowElement);
             alignRows();
-            actionManager(clones, objects, document.getElementById('row-list'), rows, oldRows, 'element-change');
+            actionManager(clones, objects, rowList, rows, oldRows, 'element-change');
+        } else {
+            rowList.insertBefore(template, elementNode.nextElementSibling);
+            alignRows();
+            actionManager(rowElement, objects[0], rowList, rows, oldRows, 'element-change');
         }
     } else {
         template = document.getElementById(`${type}-template`).content.cloneNode(true);
@@ -1256,9 +1269,9 @@ function generateRow(elementNode, element, type) {
         isClone = false;
         objects.push(updateRow(template, element, type, isClone));
         const rowElement = template.querySelector('.row-wrapper');
-        elementNode ? elementNode.parentNode.insertBefore(template, elementNode.nextElementSibling) : document.getElementById('row-list').prepend(template);
+        elementNode ? rowList.insertBefore(template, elementNode.nextElementSibling) : document.getElementById('row-list').prepend(template);
         alignRows();
-        actionManager(rowElement, objects[0], document.getElementById('row-list'), rows, oldRows, 'element-change');
+        actionManager(rowElement, objects[0], rowList, rows, oldRows, 'element-change');
     }
 } 
 
